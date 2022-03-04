@@ -21,11 +21,12 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 @RestController
 @RequestMapping("/server")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200/",maxAge = 4200)
 public class ServerController {
     private final ServerServiceImpl serverService;
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getServers() {
+    public ResponseEntity<Response> getServers() throws InterruptedException {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(LocalDateTime.now())
@@ -42,7 +43,7 @@ public class ServerController {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(LocalDateTime.now())
-                        .data(Map.of("servers", server))
+                        .data(Map.of("server", server))
                         .message(server.getStatus() == Status.SERVER_UP ? "ping success" : "ping failed")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -53,7 +54,7 @@ public class ServerController {
     public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
-                .data(Map.of("servers", serverService.create(server)))
+                .data(Map.of("server", serverService.create(server)))
                 .message("Server created")
                 .status(HttpStatus.CREATED)
                 .statusCode(HttpStatus.CREATED.value()).build());
@@ -63,7 +64,7 @@ public class ServerController {
     public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Response.builder()
                 .timeStamp(LocalDateTime.now())
-                .data(Map.of("servers", serverService.get(id)))
+                .data(Map.of("server", serverService.get(id)))
                 .message("Server retrieved")
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value()).build());
@@ -81,6 +82,7 @@ public class ServerController {
 
     @GetMapping(path = "/image/{fileName}", produces = IMAGE_PNG_VALUE)
     public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
-        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/Downloads/images/" + fileName));
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/Downloads/" + fileName));
     }
+
 }

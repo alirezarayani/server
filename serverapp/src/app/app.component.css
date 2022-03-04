@@ -1,0 +1,18 @@
+.jumbotron-head{
+  min-height: 100px;
+  background: #074c68;
+}/* You can add global styles to this file, and also import other style files */
+.jumbotron-head .title-server{
+  color: aliceblue;
+  padding-top: 20px;
+}
+.align{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  align-items: center;
+}
+.align > button , .align > a{
+  margin-right: 6px;
+}
